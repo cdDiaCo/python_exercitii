@@ -11,6 +11,10 @@ def test_simple():
 
 
 
+
+
+
+
 # intrebari: 1. Obiectele au mereu aceeasi lungime(numar de elemente)?
 #            2. Cheile obiectelor se potrivesc mereu?
 #            3. key-urile sunt in aceeasi ordine?
