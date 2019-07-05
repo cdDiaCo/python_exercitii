@@ -18,64 +18,85 @@ def get_dictionaries_list_from_file():
 
     dict_list = [] # this will hold all the dictionaries from the input file
 
-    new_dict = {}
+    inner_dict = {} # this will hold the key-value pairs from the input file
+    outer_dict = {} # this will hold the inner_dict and its initial position in the input file
+
+    count = 1 # dict position in the input file
     for elem in lines_list :
         if len(elem) > 0 : # line not empty
             key = elem[0]
             value = elem[1]
-            new_dict[key] = value
+            inner_dict[key] = value
 
-            if elem == lines_list[-1] : # last elem in the list
-                dict_list.append(new_dict)
-                new_dict = {}
+        else : # empty line:  1. either the line that separates two dictionaries  2. or just empty line at the beginning or at the end of input file
 
-        else : # empty line:    1. either the line that separates two dictionaries  2. or just empty line at the beginning or at the end of input file
+            if len(inner_dict) > 0 : # this is the empty line that separates two dictionaries
+                outer_dict[count] = inner_dict
+                dict_list.append(outer_dict)
 
-            if len(new_dict) > 0 : # this is the empty line that separates two dictionaries
-                dict_list.append(new_dict)
-                new_dict = {}
+                inner_dict = {}
+                outer_dict = {}
+
+                count += 1
 
     return dict_list
 
 
 
 
-#dictionaries_list = get_dictionaries_list_from_file()
-
-
 
 dictionaries_list = get_dictionaries_list_from_file()
 #print(dictionaries_list)
 
+
 output_list = []
 
 for i in range(len(dictionaries_list)) :
-    min_dict = dictionaries_list[i]
+    min_dict = {}
+    initial_pos_i = 0
     min_pos = i
 
-    sorted_keys_i = sorted(dictionaries_list[i].keys())
+    for key, value in dictionaries_list[i].items() :
+        min_dict = value
+        initial_pos_i = key
+
+    #print(min_dict)
+
+
+    sorted_keys_i = sorted(dictionaries_list[i][initial_pos_i].keys())
     key_i = sorted_keys_i[0]
+    #print(key_i)
 
     for j in range(i+1, len(dictionaries_list)) :
-        sorted_keys_j = sorted(dictionaries_list[j].keys())
+        initial_pos_j = 0
+        
+        for key, value in dictionaries_list[j].items():
+            initial_pos_j = key
+        
+        sorted_keys_j = sorted(dictionaries_list[j][initial_pos_j].keys())
         key_j = sorted_keys_j[0]
-        #print(min_dict[key_i])
-        #print(dictionaries_list[j][key_j])
+        #print(key_j)
+
+        #print(initial_pos_j)
+        #print(dictionaries_list[j][initial_pos_j][key_j])
 
 
-        if min_dict[key_i] > dictionaries_list[j][key_j] :
+
+
+        if min_dict[key_i] > dictionaries_list[j][initial_pos_j][key_j] :
             #print('true')
-            min_dict = dictionaries_list[j]
+            min_dict = dictionaries_list[j][initial_pos_j]
             key_i = key_j
             min_pos = j
 
-    print(min_pos)
+
+    #print(min_pos)
     temp = min_dict
     dictionaries_list[min_pos] = dictionaries_list[i]
     dictionaries_list[i] = min_dict
 
 
-    print(dictionaries_list)
+print(dictionaries_list)
 
 
 
