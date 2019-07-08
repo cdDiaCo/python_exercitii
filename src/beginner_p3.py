@@ -5,18 +5,17 @@
 
 # get the order of the dictionaries in the output file
 
-# write comments for sort_list function
+# write output file
 
-#  write output file
+
 
 
 def get_dictionaries_list_from_file():
 
-    f = open('../dictionaries_list', 'r')
     lines_list = []
-    for line in f:
-        lines_list.append(line.split())
-    f.close()
+    with open('../dictionaries_list') as f:
+        for line in f:
+            lines_list.append(line.split())
 
     dict_list = [] # this will hold all the dictionaries from the input file
 
@@ -47,37 +46,55 @@ def get_dictionaries_list_from_file():
 
 
 
-def sort_list() :
+def sort_list() : # implementation of selection sort algorithm
 
     dictionaries_list = get_dictionaries_list_from_file()
+    count = 0
 
-    for i in range(len(dictionaries_list)) :
+    for i in range(len(dictionaries_list)):  # this is considered the 'sorted list'
         min_dict = {}
         initial_pos_i = 0
         min_pos = i
 
-        for key, value in dictionaries_list[i].items() :
+        for key, value in dictionaries_list[i].items():
             min_dict = value
             initial_pos_i = key
 
-        sorted_keys_i = sorted(dictionaries_list[i][initial_pos_i].keys())
-        key_i = sorted_keys_i[0]
+        sorted_keys_i = sorted(dictionaries_list[i][initial_pos_i].keys())  # get the key that has the min value for every dictionary in the first list
+        key_i = sorted_keys_i[count]
 
-        for j in range(i+1, len(dictionaries_list)) :
+        for j in range(i + 1, len(dictionaries_list)):  # the remaining list to be sorted
             initial_pos_j = 0
+
 
             for key, value in dictionaries_list[j].items():
                 initial_pos_j = key
 
-            sorted_keys_j = sorted(dictionaries_list[j][initial_pos_j].keys())
-            key_j = sorted_keys_j[0]
+            sorted_keys_j = sorted(dictionaries_list[j][initial_pos_j].keys())  # get the key that has the min value for every dictionary in the second list
+            key_j = sorted_keys_j[count]
 
-            if min_dict[key_i] > dictionaries_list[j][initial_pos_j][key_j] :
+
+            #compare_dictionaries(min_dict, dictionaries_list[j][initial_pos_j], key_i, key_j)
+
+            if min_dict[key_i] > dictionaries_list[j][initial_pos_j][key_j]:  # check which value is the lowest
                 min_dict = dictionaries_list[j][initial_pos_j]
                 key_i = key_j
                 min_pos = j
                 initial_pos_i = initial_pos_j
 
+
+            elif min_dict[key_i] == dictionaries_list[j][initial_pos_j][key_j]:  # the two values are equal, reapply the algorithm ignoring the current key
+                pass
+
+                #count += 1
+
+                #key_i = sorted_keys_i[count]
+                #key_j = sorted_keys_j[count]
+
+
+
+
+        # switch the dictionary that has the new found lowest value with the dictionary in the first list
         temp = dictionaries_list[min_pos]
         dictionaries_list[min_pos] = dictionaries_list[i]
         dictionaries_list[i] = temp
@@ -86,12 +103,33 @@ def sort_list() :
 
 
 
-print(sort_list())
+def compare_dictionaries() :
+    pass
+
+
+
+#print(sort_list())
+
 
 
 
 def write_output_file() :
-    pass
+    sorted_list = sort_list()
+
+    with open("output_file", "w") as f:
+
+        for elem in sorted_list :
+            for key in elem :
+                line = str(key) + " "
+                f.write(line)
+                print(str(key))
+
+
+
+
+
+write_output_file()
+
 
 
 
