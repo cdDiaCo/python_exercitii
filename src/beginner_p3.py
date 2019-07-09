@@ -39,58 +39,35 @@ def get_dictionaries_list_from_file():
 def sort_list() : # implementation of selection sort algorithm
 
     dictionaries_list = get_dictionaries_list_from_file()
-    count = 0
+    initial_pos_list = list(range(len(dictionaries_list)))
 
     for i in range(len(dictionaries_list)):  # this is considered the 'sorted list'
-        min_dict = {}
-        initial_pos_i = 0
         min_pos = i
 
-        for key, value in dictionaries_list[i].items():
-            min_dict = value
-            initial_pos_i = key
-
-        key_i = get_lowest_key(dictionaries_list, i, initial_pos_i, count)
-
+        key_i = get_lowest_key(dictionaries_list, i)
 
         for j in range(i + 1, len(dictionaries_list)):  # the remaining list to be sorted
-            initial_pos_j = 0
 
+            key_j = get_lowest_key(dictionaries_list, j)
 
-            for key, value in dictionaries_list[j].items():
-                initial_pos_j = key
-
-            key_j = get_lowest_key(dictionaries_list, j, initial_pos_j, count)
-
-
-            #compare_dictionaries(min_dict, dictionaries_list[j][initial_pos_j], key_i, key_j, current_pos, count)
-
-            if min_dict[key_i] > dictionaries_list[j][initial_pos_j][key_j]:  # check which value is the lowest
-                min_dict = dictionaries_list[j][initial_pos_j]
-                key_i = key_j
+            if dictionaries_list[min_pos][key_i] > dictionaries_list[j][key_j]:  # check which value is the lowest
                 min_pos = j
-                #initial_pos_i = initial_pos_j
-
-
-            elif min_dict[key_i] == dictionaries_list[j][initial_pos_j][key_j]:  # the two values are equal, reapply the algorithm ignoring the current key
-                pass
-
-                #count += 1
-
-
+                key_i = key_j
 
         switch_dictionaries(dictionaries_list, i, min_pos)
+        switch_dictionaries(initial_pos_list, i, min_pos)
+    print(initial_pos_list)
+
 
     return dictionaries_list
 
 
 
-def get_lowest_key(list, element, element_key, count):
-    sorted_keys_i = sorted(list[element][element_key].keys())  # get the key that has the min value for every dictionary in the first list
-    key_i = sorted_keys_i[count]
+def get_lowest_key(list, element):
+    sorted_keys_i = sorted(list[element].keys())  # get the key that has the min value for every dictionary in the first list
+    key_i = sorted_keys_i[0]
 
     return key_i
-
 
 
 def switch_dictionaries(list, prev_pos, new_pos):
@@ -135,7 +112,7 @@ def write_output_file() :
 
 
 
-#write_output_file()
+write_output_file()
 
 
 
