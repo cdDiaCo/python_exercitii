@@ -23,7 +23,7 @@ def get_dictionaries_list_from_file():
     for elem in lines_list :
         if len(elem) > 0 : # line not empty
             key = elem[0]
-            value = elem[1]
+            value = int(elem[1])
             dictionary[key] = value
 
         else : # empty line:  1. either the line that separates two dictionaries  2. or just empty line at the beginning or at the end of input file
@@ -44,71 +44,60 @@ def sort_list() : # implementation of selection sort algorithm
     for i in range(len(dictionaries_list)):  # this is considered the 'sorted list'
         min_pos = i
 
-        key_i = get_lowest_key(dictionaries_list, i)
-
         for j in range(i + 1, len(dictionaries_list)):  # the remaining list to be sorted
-
-            key_j = get_lowest_key(dictionaries_list, j)
-
-            if dictionaries_list[min_pos][key_i] > dictionaries_list[j][key_j]:  # check which value is the lowest
+            res = compare_dictionaries(dictionaries_list[min_pos], dictionaries_list[j])
+            if res :
                 min_pos = j
-                key_i = key_j
 
         switch_dictionaries(dictionaries_list, i, min_pos)
         switch_dictionaries(initial_pos_list, i, min_pos)
+
     print(initial_pos_list)
+    print(dictionaries_list)
+
+    return initial_pos_list
 
 
-    return dictionaries_list
 
+def get_sorted_keys(dict):
+    sorted_keys = sorted(dict.keys())  # get the key that has the min value for every dictionary in the first list
+    return sorted_keys
 
-
-def get_lowest_key(list, element):
-    sorted_keys_i = sorted(list[element].keys())  # get the key that has the min value for every dictionary in the first list
-    key_i = sorted_keys_i[0]
-
-    return key_i
 
 
 def switch_dictionaries(list, prev_pos, new_pos):
     # switch the dictionary that has the new found lowest value with the dictionary in the first list
-
     temp = list[prev_pos]
     list[prev_pos] = list[new_pos]
     list[new_pos] = temp
 
 
 
-def compare_dictionaries(previous_dict, current_dict, previous_key, current_key, current_pos, count) :
+def compare_dictionaries(first_dict, second_dict, count = 0):
+    sorted_keys_first_dict = get_sorted_keys(first_dict)
+    sorted_keys_second_dict = get_sorted_keys(second_dict)
 
-    if previous_dict[previous_key] > current_dict[current_key] :
-        previous_dict = current_dict
-        previous_key = current_key
-        min_pos = current_pos
-
-    elif previous_dict[previous_key] == current_dict[current_key] :
+    if first_dict[sorted_keys_first_dict[count]] > second_dict[sorted_keys_second_dict[count]] :
+        return True
+    elif first_dict[sorted_keys_first_dict[count]] == second_dict[sorted_keys_second_dict[count]] :
         count += 1
+        return compare_dictionaries(first_dict, second_dict, count)
+    else :
+        return False
 
 
 
-
-
-
+#sort_list()
 
 
 def write_output_file() :
     sorted_list = sort_list()
-    print(sorted_list)
 
     with open("output_file", "w") as f:
 
-        for elem in sorted_list :
-            for key in elem :
-                line = str(key) + " "
-                f.write(line)
-                #print(str(key))
-
-
+        for pos in sorted_list :
+            line = str(pos) + " "
+            f.write(line)
 
 
 
