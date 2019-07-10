@@ -13,7 +13,7 @@
 def get_dictionaries_list_from_file():
 
     lines_list = []
-    with open('../dictionaries_list') as f:
+    with open('dictionaries_list') as f:
         for line in f:
             lines_list.append(line.split())
 
@@ -45,7 +45,7 @@ def sort_list() : # implementation of selection sort algorithm
         min_pos = i
 
         for j in range(i + 1, len(dictionaries_list)):  # the remaining list to be sorted
-            res = compare_dictionaries(dictionaries_list[min_pos], dictionaries_list[j])
+            res = is_smaller(dictionaries_list[min_pos], dictionaries_list[j])
             if res :
                 min_pos = j
 
@@ -73,21 +73,25 @@ def switch_dictionaries(list, prev_pos, new_pos):
 
 
 
-def compare_dictionaries(first_dict, second_dict, count = 0):
+def is_smaller(first_dict, second_dict, count = 0): # check if second dictionary is smaller
     sorted_keys_first_dict = get_sorted_keys(first_dict)
     sorted_keys_second_dict = get_sorted_keys(second_dict)
 
-    if first_dict[sorted_keys_first_dict[count]] > second_dict[sorted_keys_second_dict[count]] :
+
+    if count >= len(sorted_keys_first_dict) : # first dictionary is smaller because it has fewer elements
+        return False
+    elif count >= len(sorted_keys_second_dict) : # second dictionary is smaller because it has fewer elements
         return True
-    elif first_dict[sorted_keys_first_dict[count]] == second_dict[sorted_keys_second_dict[count]] :
+
+
+    if first_dict[sorted_keys_first_dict[count]] > second_dict[sorted_keys_second_dict[count]] : # the second dictionary is smaller
+        return True
+    elif first_dict[sorted_keys_first_dict[count]] == second_dict[sorted_keys_second_dict[count]] : # equal values, repeat with the next smallest keys
         count += 1
-        return compare_dictionaries(first_dict, second_dict, count)
-    else :
+        return is_smaller(first_dict, second_dict, count)
+    else : # the second dictionary is bigger
         return False
 
-
-
-#sort_list()
 
 
 def write_output_file() :
