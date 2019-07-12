@@ -4,32 +4,29 @@ def swap_key_value(dictionary) :
     new_dict = {}
 
     for elem in dictionary :
-        new_key = dictionary[elem]
-        new_dict[new_key] = elem
+        if is_swap_possible(dictionary[elem]) :
+            new_key = dictionary[elem]
+            new_dict[new_key] = elem
+        else :
+            raise ValueError('Mutable value found. Swapping not possible')
 
     print(new_dict)
     return new_dict
 
 
 
-def is_swap_possible(data_struct) :
-
+def is_swap_possible(element) :
     res = True
 
-    for element in data_struct :
-        if isinstance(data_struct, dict):
-            element = data_struct[element]
+    if isinstance(element, (dict, list, set)) :
+        # element is mutable and swap not possible
+        res = False
+    elif isinstance(element, tuple) : # recursively check every tuple element
+        for el in element :
+            if not is_swap_possible(el): # if at least one element in the tuple is mutable - return false
+                return False
 
-        if isinstance(element, dict) or isinstance(element, list) or isinstance(element, set) :
-            # element is mutable and swap not possible
-            res = False
-        else :
-            if isinstance(element, tuple) : # recursively check every tuple element
-                return is_swap_possible(element)
-
-    print(res)
     return res
-
 
 
 dict_a = {'a': 123, 'b': 456}
@@ -38,8 +35,11 @@ dict_c = {'a': {'c': 123}}
 dict_d = {'a' : (6,7,8)}
 
 
-if is_swap_possible(dict_d) :
+try :
     swap_key_value(dict_d)
+except ValueError as err:
+    print(err)
+
 
 
 
