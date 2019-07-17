@@ -52,7 +52,7 @@ class Deck(UserList) :
     def add_card(self, card):
         # check if card already exists?
         if card in self:
-            print('Already in the Deck.')
+            print('Card already in deck.')
         else:
             self.append(card)
 
@@ -62,7 +62,7 @@ class Deck(UserList) :
         if card in self:
             self.remove(card)
         else:
-            print("Card cannot be removed. Card not present in the deck")
+            print("Card cannot be removed. Card not present in deck")
 
 
 
