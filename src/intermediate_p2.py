@@ -130,16 +130,17 @@ class Card() :
 
 
 class Player :
+
     def __init__(self):
-        self.hand = HandDeck()
+        self.deck = HandDeck()
 
 
     def add_card(self, card):
-        self.hand.add_card(card)
+        self.deck.add_card(card)
 
 
     def remove_card(self, card):
-        self.hand.remove_card(card)
+        self.deck.remove_card(card)
 
 
 
@@ -171,6 +172,7 @@ class Dealer :
     def sort_cards_by_color(self, card):
         self.deck.sort_cards_by_color(card)
 
+
     def sort_cards_by_number(self, card):
         self.deck.sort_cards_by_number(card)
 
@@ -185,6 +187,17 @@ class Dealer :
 
     def remove_card(self, card):
         self.deck.remove_card(card)
+
+
+    def deal_card(self, receiver):
+        card = self.deck.pop()
+        receiver.deck.add_card(card)
+
+
+
+
+
+
 
 
 
@@ -206,27 +219,37 @@ new_table.add_player(player_one)
 new_table.add_player(player_two)
 
 
+new_dealer.shuffle_cards()
+
+
+new_dealer.deal_card(player_two)
+new_dealer.deal_card(player_two)
+
+
+
+new_dealer.deal_card(new_table)
+new_dealer.deal_card(new_table)
+
 
 #----------------
 
 
 
 
-card_one = Card(15, "SPADES")
-card_two = Card(15, "HEARTS")
-card_three = Card(15, "DIAMONDS")
+#card_one = Card(15, "SPADES")
+#card_two = Card(15, "HEARTS")
+#card_three = Card(15, "DIAMONDS")
 
 
-#new_dealer.shuffle_cards()
 
 
 #new_dealer.sort_cards_by_color(card_one)
 #new_dealer.sort_cards_by_number(card_one)
 
 
-new_dealer.remove_card(card_one)
-new_dealer.remove_card(card_two)
-new_dealer.remove_card(card_three)
+#new_dealer.remove_card(card_one)
+#new_dealer.remove_card(card_two)
+#new_dealer.remove_card(card_three)
 
 
 #new_dealer.remove_card(card_one)
@@ -239,20 +262,24 @@ new_dealer.remove_card(card_three)
 #player_two.remove_card(card_two)
 
 
-new_table.add_card(card_three)
-new_table.add_card(card_two)
-new_table.remove_card(card_three)
+#new_table.add_card(card_three)
+#new_table.add_card(card_two)
+#new_table.remove_card(card_three)
 
 
 
 
 
 
+
+print_cards(new_dealer.deck)
+
+
+print("-----------------------")
+
+print_cards(player_two.deck)
+
+
+print("----------------")
 
 print_cards(new_table.deck)
-
-
-
-
-
-
