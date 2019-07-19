@@ -1,9 +1,4 @@
 
-
-# TODO when cards are dealt, remove them from dealerDeck, and add them to the other decks
-
-
-
 from collections import UserList
 import random
 
