@@ -29,9 +29,6 @@ class Deck(UserList) :
 
 
 class HandDeck(Deck):
-    def __init__(self):
-        Deck.__init__(self)
-
 
     def add_card(self, card):
         if len(self) >= 2 :
@@ -68,27 +65,14 @@ class DealerDeck(Deck):
 
 
 
-    def sort_cards_by_number(self, card):
-        def sortFirst(card):
-            return card.card_number
-
-        self.sort(key=sortFirst)
+    def sort_cards(self, card):
+        self.sort(key=lambda card: (card.card_color, card.card_number))
 
 
-
-
-    def sort_cards_by_color(self, card):
-        def sortFirst(card):
-            return card.card_color
-
-        self.sort(key=sortFirst)
 
 
 
 class TableDeck(Deck):
-    def __init__(self):
-        Deck.__init__(self)
-
 
     def add_card(self, card):
         if len(self) >= 5 :
@@ -118,9 +102,8 @@ class Card() :
         return self.card_number
 
 
-    def get_card_description(self):
-        description = self.get_card_color() + " " + str(self.get_card_number())
-        return  description
+    def __str__(self):
+        return self.get_card_color() + " " + str(self.get_card_number())
 
 
 
@@ -164,12 +147,8 @@ class Dealer :
         self.deck = DealerDeck()
 
 
-    def sort_cards_by_color(self, card):
-        self.deck.sort_cards_by_color(card)
-
-
-    def sort_cards_by_number(self, card):
-        self.deck.sort_cards_by_number(card)
+    def sort_cards(self, card):
+        self.deck.sort_cards(card)
 
 
     def shuffle_cards(self):
@@ -192,13 +171,9 @@ class Dealer :
 
 
 
-
-
-
-
 def print_cards(deck):
     for elem in deck:
-        print(elem.get_card_description())
+        print(elem.__str__())
 
 
 
@@ -214,7 +189,13 @@ new_table.add_player(player_one)
 new_table.add_player(player_two)
 
 
+card_one = Card(15, "SPADES")
+#card_two = Card(15, "HEARTS")
+#card_three = Card(15, "DIAMONDS")
+
+
 new_dealer.shuffle_cards()
+new_dealer.sort_cards(card_one)
 
 
 new_dealer.deal_card(player_two)
