@@ -1,8 +1,7 @@
 
 
 # TODO when cards are dealt, remove them from dealerDeck, and add them to the other decks
-# TODO add new methods for some classes to avoid a 'long chain of calls'
-# TODO try to change the sort methods
+
 
 
 from collections import UserList
@@ -74,55 +73,20 @@ class DealerDeck(Deck):
 
 
 
-    def sort_cards_by_number(self):
-        num_of_sorted_cards = 0
-        for num in range(2, 16):
-            if num == 11:
-                continue
-
-            for i in range(num_of_sorted_cards, len(self)):
-
-                if self[i].get_card_number() == num :
-                    continue
-                else:
-                    for j in range(i+1, len(self)):
-
-                        if self[j].get_card_number() == num :
-                            temp = self[i]
-                            self[i] = self[j]
-                            self[j] = temp
-
-                            break
-            num_of_sorted_cards += 4
-
-
-
-    def sort_cards_by_color(self, card):
-        def sortFirst(val):
-            return card.get_card_color()
+    def sort_cards_by_number(self, card):
+        def sortFirst(card):
+            return card.card_number
 
         self.sort(key=sortFirst)
 
 
-'''
-    def sort_cards_by_color(self):
-        num_of_sorted_cards = 0
-        for color in self.colors:
-            for i in range(num_of_sorted_cards, len(self)) :
 
-                if self[i].get_card_color() == color:
-                    continue
-                else:
-                    for j in range(i+1, len(self)):
-                        if self[j].get_card_color() == color:
-                            temp = self[i]
-                            self[i] = self[j]
-                            self[j] = temp
 
-                            break
-            num_of_sorted_cards += 13
-'''
+    def sort_cards_by_color(self, card):
+        def sortFirst(card):
+            return card.card_color
 
+        self.sort(key=sortFirst)
 
 
 
@@ -165,16 +129,17 @@ class Card() :
 
 
 
-'''
-class Hand() :
-    def __init__(self):
-        self.hand_deck = HandDeck()
-'''
-
-
 class Player :
     def __init__(self):
         self.hand = HandDeck()
+
+
+    def add_card(self, card):
+        self.hand.add_card(card)
+
+
+    def remove_card(self, card):
+        self.hand.remove_card(card)
 
 
 
@@ -188,6 +153,13 @@ class Table :
         self.players.append(player)
 
 
+    def add_card(self, card):
+        self.deck.add_card(card)
+
+    def remove_card(self, card):
+        self.deck.remove_card(card)
+
+
 
 
 
@@ -195,6 +167,24 @@ class Dealer :
     def __init__(self):
         self.deck = DealerDeck()
 
+
+    def sort_cards_by_color(self, card):
+        self.deck.sort_cards_by_color(card)
+
+    def sort_cards_by_number(self, card):
+        self.deck.sort_cards_by_number(card)
+
+
+    def shuffle_cards(self):
+        self.deck.shuffle_cards()
+
+
+    def add_card(self, card):
+        self.deck.add_card(card)
+
+
+    def remove_card(self, card):
+        self.deck.remove_card(card)
 
 
 
@@ -217,45 +207,49 @@ new_table.add_player(player_two)
 
 
 
+#----------------
 
-dealer_deck = DealerDeck()
-dealer_deck.shuffle_cards()
+
 
 
 card_one = Card(15, "SPADES")
+card_two = Card(15, "HEARTS")
+card_three = Card(15, "DIAMONDS")
+
+
+#new_dealer.shuffle_cards()
+
+
+#new_dealer.sort_cards_by_color(card_one)
+#new_dealer.sort_cards_by_number(card_one)
+
+
+new_dealer.remove_card(card_one)
+new_dealer.remove_card(card_two)
+new_dealer.remove_card(card_three)
+
+
+#new_dealer.remove_card(card_one)
 
 
 
-dealer_deck.sort_cards_by_color(card_one)
-#dealer_deck.sort_cards_by_number()
+
+#player_two.add_card(card_one)
+#player_two.add_card(card_two)
+#player_two.remove_card(card_two)
+
+
+new_table.add_card(card_three)
+new_table.add_card(card_two)
+new_table.remove_card(card_three)
 
 
 
-#card_two = Card(15, "HEARTS")
-#card_three = Card(15, "DIAMONDS")
-#dealer_deck.remove_card(card_one)
-#dealer_deck.remove_card(card_two)
-#dealer_deck.remove_card(card_three)
-
-#dealer_deck.add_card(card_one)
 
 
 
 
-#player_two.hand.add_card(card_one)
-#player_two.hand.add_card(card_two)
-
-
-#new_table.deck.add_card(card_three)
-#new_table.deck.remove_card(card_three)
-
-
-#print(new_table.deck)
-
-#print(new_card.get_card_description())
-
-
-print_cards(dealer_deck)
+print_cards(new_table.deck)
 
 
 
