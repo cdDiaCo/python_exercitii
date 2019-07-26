@@ -14,3 +14,11 @@ class SingletonClass(metaclass=SingletonMeta):
 
 
 obj_one = SingletonClass()
+obj_two = SingletonClass()
+
+
+if obj_one is obj_two:
+    print("same object")
+else:
+    print("different objects")
+
